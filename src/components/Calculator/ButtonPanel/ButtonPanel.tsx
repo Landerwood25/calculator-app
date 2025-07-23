@@ -5,13 +5,13 @@ import type {
   ButtonClassesNames,
   ButtonClassObjType,
   ButtonLabelTypes,
-} from "../../../utilities/types";
+} from "../../../utilities/constants";
 
 interface ButtonPanelProps {
-  handleButtonPress: MouseEventHandler<HTMLButtonElement>;
+  handleClick: MouseEventHandler<HTMLButtonElement>;
 }
 
-export default function ButtonPanel({ handleButtonPress }: ButtonPanelProps) {
+export default function ButtonPanel({ handleClick }: ButtonPanelProps) {
   const createButton = (
     btnLabel: ButtonLabelTypes,
     btnClass: ButtonClassesNames
@@ -20,15 +20,15 @@ export default function ButtonPanel({ handleButtonPress }: ButtonPanelProps) {
       <Button
         className={`btn btn-${btnClass}`}
         label={btnLabel}
-        handleButtonPress={handleButtonPress}
+        handleClick={handleClick}
       />
     );
   };
 
   return (
     <div className="button-panel">
-      {buttonClassMap.map((btnClass: ButtonClassObjType) => {
-        return createButton(btnClass.label, btnClass.class);
+      {buttonClassMap.map((btnClassObj: ButtonClassObjType) => {
+        return createButton(btnClassObj.label, btnClassObj.class);
       })}
     </div>
   );

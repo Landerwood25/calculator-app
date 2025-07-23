@@ -1,17 +1,19 @@
-import type { ButtonClassMapType, ButtonLabelTypes } from "./types";
-
 export const numbersArr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 export const operandsArr = ['+', '-', '*', '/'];
-export const buttonLabels: ButtonLabelTypes[] = [
-    'C', '?', '?', '/',
-    '7', '8', '9', '*',
-    '4', '5', '6', '-',
-    '1', '2', '3', '+',
-    '?', '0', '.', '='
-];
+
+export type ButtonLabelTypes = 
+'C' | '?' | '/' | '7' |
+'8' | '9' | '*' | '4' | 
+'5' | '6' | '-' | '1' |
+'2' | '3' | '+' | '0' | '.' | '=';
+
+export type ButtonClassesNames = "clear" | "grey" | "yellow" | "equal";
+export type ButtonClassObjType = {label : ButtonLabelTypes, class : ButtonClassesNames}
+export type ButtonClassMapType = ButtonClassObjType[];
 
 export const buttonClassMap: ButtonClassMapType = [
     { label: 'C', class: "clear" },
+    { label: '?', class: "grey" },
     { label: '?', class: "grey" },
     { label: '/', class: "yellow" },
     { label: '7', class: "grey" },
@@ -26,6 +28,7 @@ export const buttonClassMap: ButtonClassMapType = [
     { label: '2', class: "grey" },
     { label: '3', class: "grey" },
     { label: '+', class: "yellow" },
+    { label: '?', class: "grey" },
     { label: '0', class: "grey" },
     { label: '.', class: "grey" },
     { label: '=', class: "equal" },

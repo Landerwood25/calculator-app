@@ -1,96 +1,82 @@
-import { useState, type MouseEventHandler } from 'react'
-import './App.css'
-import { calculate } from './utilities/math';
-import Calculator from './components/Calculator/Calculator';
-import { numbersArr } from './utilities/constants';
+import { useState, type MouseEventHandler } from "react";
+import { calculate } from "./utilities/math";
+import Calculator from "./components/Calculator/Calculator";
+import { numbersArr, operandsArr } from "./utilities/constants";
+import "./App.css";
 
-
-function App() {
-  const [display, setDisplay] = useState<string>('');
-  const [currNumber, setCurrNumber] = useState<string>('');
-  const [numbers, setNumbers] = useState<number[]>([]);
-  const [nonNumbers, setNonNumbers] = useState<string[]>([]);
-
-  const handleButtonPress: MouseEventHandler<HTMLButtonElement> = (event) => {
-    console.log((event.target as HTMLButtonElement).value);
-    const eventValue = (event.target as HTMLButtonElement).value;
-    setDisplay(display + eventValue);
-    if (numbersArr.includes(eventValue)) {
-      handleNumberPress(parseInt(eventValue));
-    } else {
-      handleNonNumPress(eventValue);
-    }
-
-  }
-  const handleNumberPress = (num: number) => {
-    setCurrNumber(currNumber + num.toString());
-  };
-  const handleOperandPress = (op: string) => {
-    setNumbers([...numbers, parseInt(currNumber)]);
-    setCurrNumber('');
-    setNonNumbers([...nonNumbers, op]);
-  };
-  const handleClearPress = () => {
-    setDisplay('');
-    setCurrNumber('');
-    setNumbers([]);
-    setNonNumbers([]);
-  };
-  const handleEnterPress = () => {
-    numbers.push(parseInt(currNumber));
-    const answer = calculate(numbers, nonNumbers);
-    setDisplay(answer ? answer.toString() : '');
-    setCurrNumber('');
-    setNumbers([]);
-    setNonNumbers([]);
-
-  };
-  const handleNonNumPress = (op: string) => {
-    switch (op) {
-      case "+":
-        handleOperandPress("+");
-        break;
-      case "-":
-        handleOperandPress("-");
-        break;
-      case "*":
-        handleOperandPress("*");
-        break;
-      case "/":
-        handleOperandPress("/");
-        break;
-      case ".":
-        console.log(".");
-        break;
-      case "C":
-        handleClearPress();
-        break;
-      case "=":
-        handleEnterPress();
-        break;
-    }
-  };
-
-
-
-  return (
-    <Calculator display={display} handleButtonPress={handleButtonPress} />
-  )
+interface Icalc {
+  input: string;
+  display: string;
+  enterClicked: boolean;
 }
 
-export default App
+function App() {
+  const [calc, setCalc] = useState<Icalc>({
+    input: "",
+    display: "",
+    enterClicked: false,
+  });
 
+  const handleClearPress = () => {
+    setCalc({
+      input: "",
+      display: "",
+      enterClicked: false,
+    });
+  };
 
-// pemdas
-// decimals
-// clear
-// negatives
-// fractions
-// context
-// * works fine right now with simple math want to : 
-// * start over after enter? change way I track numbers pressed and what not
-// * decimals + fractions
-// * negatives
-// *
-// *
-// *
+  const handleEnterPress = () => {
+    const answer = calculate(calc.input);
+    setCalc({
+      ...calc,
+      input: answer ? answer : "",
+      display: answer ? answer : "",
+    });
+  };
+
+  const handleClick: MouseEventHandler<HTMLButtonElement> = (event) => {
+    console.log("calc", calc);
+
+    const eventValue = (event.target as HTMLButtonElement).value;
+
+    if (operandsArr.includes(eventValue)) {
+      if (
+        operandsArr.includes(calc.input[calc.input.length - 1]) ||
+        calc.input.length === 0
+      ) {
+        return;
+      }
+    } else if (numbersArr.includes(eventValue) && calc.enterClicked) {
+      setCalc((prevCalc) => {
+        return {
+          ...prevCalc,
+          input: eventValue,
+          display: eventValue,
+        };
+      });
+      return;
+    } else if (eventValue === "C") {
+      handleClearPress();
+      return;
+    } else if (eventValue === "=") {
+      setCalc({
+        ...calc,
+        enterClicked: true,
+      });
+      handleEnterPress();
+      return;
+    }
+
+    setCalc((prevCalc) => {
+      return {
+        ...prevCalc,
+        input: prevCalc.input + eventValue,
+        display: prevCalc.display + eventValue,
+      };
+    });
+  };
+
+  return <Calculator display={calc.display} handleClick={handleClick} />;
+}
+
+export default App;
