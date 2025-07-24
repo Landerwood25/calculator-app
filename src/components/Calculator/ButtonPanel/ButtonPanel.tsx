@@ -14,21 +14,23 @@ interface ButtonPanelProps {
 export default function ButtonPanel({ handleClick }: ButtonPanelProps) {
   const createButton = (
     btnLabel: ButtonLabelTypes,
-    btnClass: ButtonClassesNames
+    btnClass: ButtonClassesNames,
+    idx: number
   ) => {
     return (
       <Button
         className={`btn btn-${btnClass}`}
         label={btnLabel}
         handleClick={handleClick}
+        key={`${btnLabel}-${idx}`}
       />
     );
   };
 
   return (
     <div className="button-panel">
-      {buttonClassMap.map((btnClassObj: ButtonClassObjType) => {
-        return createButton(btnClassObj.label, btnClassObj.class);
+      {buttonClassMap.map((btnClassObj: ButtonClassObjType, idx) => {
+        return createButton(btnClassObj.label, btnClassObj.class, idx);
       })}
     </div>
   );
