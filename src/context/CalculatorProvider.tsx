@@ -6,8 +6,7 @@ import {
   type MouseEventHandler,
 } from "react";
 import { CalculatorContext, type CalculatorState } from "./CalculatorContext";
-import { calculate } from "../utilities/math";
-import { operandsArr, numbersArr } from "../utilities/constants";
+import { calculate, operandsArr, numbersArr } from "../utilities";
 
 const initialState: CalculatorState = {
   input: "",
@@ -36,7 +35,6 @@ export const CalculatorProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const handleClick: MouseEventHandler<HTMLButtonElement> = (event) => {
     const eventValue = (event.target as HTMLButtonElement).value;
-    console.log("eventValue", eventValue);
 
     if (operandsArr.includes(eventValue)) {
       if (
@@ -63,6 +61,10 @@ export const CalculatorProvider: FC<PropsWithChildren> = ({ children }) => {
         enterClicked: true,
       });
       handleEnterPress();
+      return;
+    } else if (eventValue === "(") {
+      return;
+    } else if (eventValue === ")") {
       return;
     }
 

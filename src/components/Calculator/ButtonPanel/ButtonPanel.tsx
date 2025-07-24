@@ -1,11 +1,11 @@
 import { type MouseEventHandler } from "react";
-import Button from "./Button/Button";
-import { buttonClassMap } from "../../../utilities/constants";
-import type {
-  ButtonClassesNames,
-  ButtonClassObjType,
-  ButtonLabelTypes,
-} from "../../../utilities/constants";
+import Button from "./Button";
+import {
+  type ButtonClassesNames,
+  type ButtonClassObjType,
+  type ButtonLabelTypes,
+  buttonClassMap,
+} from "../../../utilities";
 
 interface ButtonPanelProps {
   handleClick: MouseEventHandler<HTMLButtonElement>;

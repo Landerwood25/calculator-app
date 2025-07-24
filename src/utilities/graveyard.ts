@@ -1,1 +1,0 @@
-export type BtnTypes = 'number' | 'clear' | 'operand' | 'equal' | 'other';
